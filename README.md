@@ -1,6 +1,6 @@
-openERP
+DBE
 =======
 
-openERP: Everyone Ruvs Python
+DBE addon for openerp
 
 Stuff goes here.
