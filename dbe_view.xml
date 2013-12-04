@@ -1,0 +1,1055 @@
+<?xml version="1.0"?>
+<openerp>
+	<data>
+		<!-- Top menu item -->
+		<menuitem name="DBE" 
+				  id="base.menu_dbe_root"
+				  sequence="120" 
+				  groups="base.group_tool_user" />
+		<!-- Vendor menu item -->
+		<menuitem name="Vendor"
+				  id="dbe.menu_vendors"
+				  parent="base.menu_dbe_root"
+				  sequence="12" />
+			<menuitem name="Vendors" parent="dbe.menu_vendors" id="menu_vendor_parent" sequence="3"/>
+			<menuitem name="Vendor Details" parent="menu_vendor_parent" id="menu_vendor_child" action="action_vendor" />
+			<menuitem name="Vendor Contacts" parent="menu_vendor_parent" id="menu_vendor_contact_child" action="action_vendor_contact" />
+		<!-- Vendor form -->		  
+		<record model="ir.ui.view" id="dbe_vendor_form">
+			<field name="name">dbe.vendor.form</field>
+			<field name="model">dbe.vendor</field>
+			<field name="arch" type="xml">
+			  <form string="DBE Vendor" version="7.0">
+				<sheet>
+					<div class="oe_title">
+					  <h1>
+						<label string="Vendor: " />
+						<field name="company" class="oe_inline" select="1" />
+					  </h1>
+					</div> 
+					<group>
+						<group>					  
+						  <field name="septa_vendor_id" select="1" />
+						  <field name="taxnum" select="2" />
+						  <field name="duns_num" select="2" />
+						  <field name="req_date" select="1" />
+						  <field name="gender" select="1" />
+						  <field name="ethnicity" select="1" />						  
+						</group> 
+						<group>
+						  <field name="pa_ucp" select="2" />
+						  <field name="dbe_qualifications" />						  
+						  <field name="arra_approved" />
+						  <field name="ccr_registered" />
+						  <field name="vuid" />
+						  <field name="active" />
+						</group>
+					</group>
+					<notebook colspan="4">
+						<page string="Description">
+						  <div class="oe_clear" />
+							  <field name="description" class="oe_inline" placeholder="Business description" />
+							  <group string="Business Size">
+								<group>
+									<field name="w9_classification" select="2" />
+									<field name="established" />
+									<field name="owned_since" />
+									<field name="comp_class" />
+								</group>
+							  </group>
+							  <group string="Financial">
+								<group>
+									<field name="year1" />
+									<field name="year2" />
+									<field name="year3" />
+								</group>
+								<group>
+									<field name="gross1" />
+									<field name="gross2" />
+									<field name="gross3" />
+								</group>
+								<group>
+								  <field name="gross_average" />
+								</group>
+							  </group>
+						</page>
+						<page string="Contacts">
+						  <field name="contacts">
+							<tree string="Contact" colors="grey:contact_type=='other';green:contact_type=='owner';red:contact_type=='company'">
+								<field name="contact_type" />
+								<field name="name" />
+								<field name="email" />
+								<field name="phone1" />
+								<field name="address1" />
+								<field name="address2" />
+								<field name="city" />
+								<field name="state_id" />
+								<field name="zip" />
+							</tree>
+						  </field>
+						</page> 
+						<page string="Application">
+						  <field name="application">
+							<tree string="Application">
+								<field name="intake_date" />
+								<field name="state" />
+								<field name="completion" />
+								<field name="dbe_specialist" />
+								<field name="onsite_visit_date" />
+								<field name="certification_type" />
+							</tree>
+						  </field>
+						</page>
+						<page string="Certification">
+						  <field name="certification">
+							<tree string="Certification">
+								<field name="certification_date" />
+								<field name="anniversary_date" />
+								<field name="status" />								
+								<field name="dbe_specialist" />
+								<field name="certification_type" />
+								<field name="dbe_manager" />
+							</tree>
+						  </field>
+						</page>
+						<page string="NAICS">
+						  <field name="naics">
+							<tree string="NAICS">
+								<field name="code" />
+								<field name="title" />
+								<field name="sequence" />					  
+							</tree>
+						  </field>
+						</page> 
+						<page string="Notes">
+						  <div class="oe_clear" />
+							  <field name="note" class="oe_inline" placeholder="Notes" />
+						</page>
+					</notebook>
+				</sheet>
+			  </form>
+			</field>
+		</record>
+		<!-- Vendor tree -->
+		<record model="ir.ui.view" id="dbe_vendor_tree">
+			<field name="name">dbe.vendor.tree</field>
+			<field name="model">dbe.vendor</field>
+			<field name="arch" type="xml"> 
+				<tree string="Vendors">
+				  <field name="req_date" select="1" />
+				  <field name="company" select="1" />
+				  <field name="septa_vendor_id" select="1" />
+				  <field name="certification" select="1" />
+				  <field name="application" />
+				  <field name="write_date" />
+				  <field name="write_uid" />
+				</tree>
+			</field>
+		</record>
+		<!-- Vendor action -->
+		<record model="ir.actions.act_window" id="action_vendor">
+			<field name="name">DBE Vendor</field>
+			<field name="res_model">dbe.vendor</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				  Click Create to begin adding Vendor records.
+				</p>
+			</field>		   
+		</record>  
+		<!-- Vendor Contact form -->
+		<record model="ir.ui.view" id="dbe_vendor_contact_form">
+			<field name="name">dbe.vendor.contact.form</field>
+			<field name="model">dbe.vendor.contact</field>
+			<field name="arch" type="xml">
+			  <form string="DBE Vendor Contact" create="false" version="7.0">
+				  <sheet>
+				  <div class="oe_title">
+					<h1>
+					  <field name="name" />
+					</h1>
+				  </div>
+				  <group string="Contact Details" colspan="4">
+					<field name="title" />
+					<field name="position" />
+					<field name="contact_type" />
+					<field name="vendor_id" readonly="1" attrs="{'invisible': [('vendor_id', '=', '')]}"/>
+					<separator string="Background Info" colspan="4" />
+					<field name="gender" />
+					<field name="ethnicity" /> -->
+					<field name="own_percent" />
+				  </group>
+				  <group colspan="4" string="Mailing Address">
+                          <field name="attention" />	
+						  <label for="address1" />						    
+							  <div>
+								<field name="address1" />
+								<field name="address2" />
+								  <div class="address_format">
+									<field name="city" placeholder="City" style="width: 40%%" />
+									<field name="state_id" on_change="onchange_state(state_id)" placeholder="State" style="width: 37%%" />
+									<field name="zip" placeholder="ZIP" style="width: 20%%" />
+								  </div>
+								  <field name="country_id" placeholder="Country" />
+							  </div>
+							  
+					  </group>
+					  <group colspan="4" string="Internet">
+						  <field name="website" widget="url" />
+						  <field name="email" />
+					  </group>
+					  <group colspan="4" string="Phone">
+						  <field name="phone1" />
+						  <field name="ext" />
+						  <separator string="Mobile" colspan="4" />
+						  <field name="phone2" />
+						  <separator string="Fax" colspan="4" />
+						  <field name="fax" />					  
+					  </group>
+					      <label for="note" />
+						  <field name="note" placeholder="Notes" />
+						  <label for="active" />
+						  <field name="active" />
+				</sheet>
+			  </form>
+			</field> 
+		</record>
+		<!-- Vendor Contact tree -->
+		<record model="ir.ui.view" id="dbe_vendor_contact_tree">
+			<field name="name">dbe.vendor.contact.tree</field>
+			<field name="model">dbe.vendor.contact</field>
+			<field name="arch" type="xml"> 
+				<tree create="false" string="Vendor Contacts" colors="grey:contact_type=='other';green:contact_type=='owner';red:contact_type=='company'">
+				  <field name="vendor_id" select="1" />
+				  <field name="name" select="1" />
+				  <field name="contact_type" select="1" />
+				  <field name="city" select="1" />
+				  <field name="state_id" select="1" />
+				  <field name="gender" select="1" />
+				  <field name="ethnicity" select="1" /> 
+				</tree>
+			</field>
+		</record>
+		<!-- Vendor Contact action -->
+		<record model="ir.actions.act_window" id="action_vendor_contact">
+			<field name="name">DBE Vendor Contact</field>
+			<field name="res_model">dbe.vendor.contact</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				  Click Create to begin adding Vendor Contact records.
+				</p>
+			</field>		   
+		</record>  
+		<!-- Application form -->		  
+		<record model="ir.ui.view" id="dbe_application_form">
+			<field name="name">dbe.application.form</field>
+			<field name="model">dbe.application</field>
+			<field name="arch" type="xml">
+			  <form string="DBE Application" version="7.0" create="false">
+				<header>
+				    <button name="app_pend" states="new" string="Begin Review" type="object" />
+				    <button name="app_pend_approve" states="pend" string="Review Complete" type="object" />
+				    <button name="app_deny" states="new,pend,pend-approve" string="Denied" type="object" class="oe_highlight" />
+				    <button name="app_withdraw" states="new,pend,pend-approve" string="Withdraw" type="object" />
+				    <button name="app_approve" states="pend-approve" string="Certify" type="object" class="oe_highlight" />
+				    <field name="state" widget="statusbar" statusbar_visible="new,pend,approve,deny,pend-approve" />
+				</header>
+				<sheet>
+					<div class="oe_title">
+					  <h1>
+						<label string="Application: " />
+						<field name="vendor_id" class="oe_inline" select="1" readonly="1" />
+					  </h1>
+					</div> 
+					<group>
+						<group>		
+						  <field name="certification_type" />
+						 <!-- <field name="state" select="1" /> -->
+						  <field name="completion" select="2"/>
+						  <field name="dbe_specialist" select="2" />
+						  <field name="active" />
+						</group> 
+						<group>
+						  <field name="intake_date" select="1" attrs="{'invisible': [('state', '=', 'new')]}" />
+						  <field name="verifier" select="2" onchange="onchange_verifier(verifier)" attrs="{'invisible': [('state', 'in', ['new', 'pend'])]}" />
+						  <field name="verified_date" select="2" attrs="{'invisible': [('state', 'in', ['new', 'pend'])]}"/>
+						 <!--<field name="onsite_visit_date" />
+						  <field name="onsite_visit_notes" /> -->
+						</group>
+					</group>
+					<notebook colspan="4">
+						<page string="Documents">
+						  <label for="docs_completed" />
+						  <field name="docs_completed" />
+						  <field name="documents" context="{'form_view_ref' : 'dbe.dbe_document_form_simple'}">
+							<tree string="Docs">
+								<field name="name" />
+								<field name="description" />
+								<field name="type_of" />
+								<field name="state" />
+							</tree>
+						  </field>
+						</page> 
+						<page string="Onsite Reports">
+						  <label for="visit_approved" />
+					      <field name="visit_approved" />
+						  <field name="onsite_report" domain="[('reason','=','application')]" context="{'form_view_ref' : 'dbe.dbe_onsite_visit_form_simple'}">
+							<tree string="Onsite Visit Reports">
+								<field name="visit_date" />
+								<field name="recommended" />
+								<field name="dbe_specialist" />
+								<field name="followup_date" />
+							</tree>
+						  </field>
+						</page> 
+						<page string="History">
+						  <field name="history">
+							<tree string="Historical Transactions" editable="top">
+								<field name="transaction_type" />
+								<field name="current_status" />
+								<field name="write_date" />
+								<field name="write_uid" />																
+							</tree>
+						  </field>
+						</page>
+						<page string="Messages">
+<!--						  <button string="Mail"
+                                name="%(mail.action_email_compose_message_wizard)d"
+                                icon="terp-mail-message-new" type="action" colspan="1"/> -->
+						  <field name="messages">
+							<tree string="Message">
+								<field name="date" />
+								<field name="email_from" />
+								<field name="author_id" />
+								<field name="subject" />
+								<field name="to_read" />
+								<field name="type" />
+								<field name="subtype_id" />
+							</tree>
+						  </field>
+						</page> 
+						<page string="Notes">
+						  <div class="oe_clear" />
+							  <field name="note" class="oe_inline" placeholder="Notes" />
+						</page>
+					</notebook>
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+			  </form>
+			</field>
+		</record>
+		<!-- Application tree -->
+		<record model="ir.ui.view" id="dbe_application_tree">
+			<field name="name">dbe.application.tree</field>
+			<field name="model">dbe.application</field>
+			<field name="arch" type="xml"> 
+				<tree string="Applications" create="false" colors="grey:state=='withdraw';blue:state=='new';red:state=='pend'">
+				  <field name="vendor_name" select="1" />
+				  <field name="certification_type" />
+				  <field name="intake_date" select="1" />
+				  <field name="completion" select="1" />
+				  <field name="state" select="1" />
+				  <field name="dbe_specialist" />
+				  <field name="write_date" />
+				  <field name="write_uid" />
+				</tree>
+			</field>
+		</record>
+		<!-- Application action -->
+		<record model="ir.actions.act_window" id="action_application">
+			<field name="name">DBE Application</field>
+			<field name="res_model">dbe.application</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				  Click Create to begin adding application records.
+				</p>
+			</field>		   
+		</record> 
+		<!-- Application menu item -->		  
+		<menuitem name="Application"
+				  id="dbe.menu_applications"
+				  parent="base.menu_dbe_root"
+				  sequence="24" />
+			<menuitem name="Applications" parent="dbe.menu_applications" id="menu_application_parent" sequence="3"/>
+			<menuitem name="Application Details" parent="menu_application_parent" id="menu_application_child" action="action_application" />
+		<!-- Application History form -->		  
+		<record model="ir.ui.view" id="dbe_application_history_form">
+			<field name="name">dbe.application.history.form</field>
+			<field name="model">dbe.application.history</field>
+			<field name="arch" type="xml">
+			  <form string="DBE Application History" version="7.0" create="false" edit="false">
+				<sheet>
+					<div class="oe_title">
+					  <h1>
+						<label string="Application History: " />
+						<field name="transaction_type" class="oe_inline" select="1" />
+					  </h1>
+					</div>
+					<group string="Application Record" colspan="4">
+						<group>					  
+						  <field name="application_id" select="1" />
+						  <field name="current_status" select="1" />
+						  <field name="completion" />
+						  <field name="dbe_specialist" select="2" />
+						</group> 
+						<group>
+						  <field name="onsite_visit_date" />
+						  <field name="onsite_visit_notes" />
+						  <field name="visit_approved" />
+						</group>
+						<group>
+						  <field name="docs_completed" />
+						</group>
+					</group>
+					<group>
+						<field name="note" class="oe_inline" placeholder="Notes" />
+					</group>
+					<group string="History Record" col="2">
+						<field name="write_date" />
+						<field name="write_uid" />					
+					</group>
+				</sheet>
+			  </form>
+		    </field>
+		</record>
+		<!-- Application History tree -->
+		<record model="ir.ui.view" id="dbe_application_history_tree">
+			<field name="name">dbe.application.history.tree</field>
+			<field name="model">dbe.application.history</field>
+			<field name="arch" type="xml"> 
+				<tree string="Historical Transactions" create="false" colors="grey:transaction_type=='WITHDRAW';blue:transaction_type=='APPROVE';red:transaction_type=='DENIED'">
+				  <field name="transaction_type" select="1" />
+				  <field name="application_id" select="1" />
+				  <field name="current_status" select="1" />
+				  <field name="completion" select="1" />
+				  <field name="dbe_specialist" />
+				  <field name="write_date" />
+				  <field name="write_uid" />
+				</tree>
+			</field>
+		</record>
+		<!-- Application History action -->
+		<record model="ir.actions.act_window" id="action_application_history">
+			<field name="name">DBE Application History</field>
+			<field name="res_model">dbe.application.history</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				  Application History records.
+				</p>
+			</field>		   
+		</record> 
+		<!-- Application History Menu Item -->
+		    <menuitem name="Application History" parent="menu_application_parent" id="menu_application_history_child" action="action_application_history" />
+
+		<!-- DBE Document SIMPLE form -->		  
+		<record model="ir.ui.view" id="dbe_document_form_simple">
+			<field name="name">dbe.document.form</field>
+			<field name="model">dbe.document</field>
+			<field name="priority" eval="17" />
+			<field name="arch" type="xml">
+			  <form string="DBE Document" version="7.0">
+				<header>
+				    <button name="doc_new" states="new" string="New" type="object" />
+				    <button name="doc_pend" states="new" string="Review" type="object" />
+				    <button name="doc_reject" states="pend" string="Reject" type="object" class="oe_highlight"/>
+				    <button name="doc_approve" states="new,pend,reject" string="Approve" type="object" class="oe_highlight"/>
+				    <field name="state" widget="statusbar" statusbar_visible="new,pend,reject,approve" />
+				</header>
+				<sheet>
+					<div class="oe_title">
+					  <h1>
+						<label string="DBE Document: " />
+						<field name="name" class="oe_inline" select="1" />
+					  </h1>
+					</div>
+					<group string="Document Details" colspan="4">
+						<group>					  
+						  <field name="description" />				  
+						</group> 
+						<group>
+							<field name="type_of" class="oe_inline" select="1" />
+						  <field name="category_description" class="oe_inline"  readonly="1" />
+						  <field name="locked" attrs="{'invisible': [('state','not in',('approve','reject'))]}" />
+						</group>
+					</group>
+					<group string="Notes">
+						<field name="note" />
+					</group>
+					<group string="Document Record" col="2">						
+						<field name="create_date" />
+						<field name="create_uid" />
+						<field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}" />
+						<field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right" />
+						<field name="type" invisible="True" />			
+					</group>
+					<field name="application_id" invisible="True" />
+					<field name="certification_id" invisible="True" />
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+			  </form>
+		    </field>
+		</record>
+		    
+		<!-- DBE Document form -->		  
+		<record model="ir.ui.view" id="dbe_document_form">
+			<field name="name">dbe.document.form</field>
+			<field name="model">dbe.document</field>
+			<field name="arch" type="xml">
+			  <form string="DBE Document" version="7.0">
+				<header>
+				    <button name="doc_new" states="new" string="New" type="object" />
+				    <button name="doc_pend" states="new" string="Review" type="object" />
+				    <button name="doc_reject" states="pend" string="Reject" type="object" class="oe_highlight"/>
+				    <button name="doc_approve" states="new,pend,reject" string="Approve" type="object" class="oe_highlight"/>
+				    <field name="state" widget="statusbar" statusbar_visible="new,pend,reject,approve" />
+				</header>
+				<sheet>
+					<div class="oe_title">
+					  <h1>
+						<label string="DBE Document: " />
+						<field name="name" class="oe_inline" select="1" />
+					  </h1>
+					</div>
+					<group string="Document Details" colspan="4">
+						<group>					  
+						  <field name="description" />
+						  <field name="file_size" />					  
+						  <field name="type_of" class="oe_inline" select="1" />
+						  <field name="category_description" class="oe_inline"  readonly="1" />
+						</group> 
+						<group>
+						  <field name="application_id" widget="selection" />
+						  <field name="certification_id" widget="selection" />
+						  <field name="vendor_id" select="1" widget="selection" />
+						  <field name="locked" attrs="{'invisible': [('state','not in',('approve','reject'))]}" />
+						</group>
+					</group>
+					<group string="Notes">
+						<field name="note" />
+					</group>
+					<group string="Document Record" col="2">						
+						<field name="create_date" />
+						<field name="create_uid" />
+						<field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}" />
+						<field name="datas_fname" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right" />
+						<field name="type" />					
+					</group>
+					<group string="Attached To" colspan="4">
+					    <group>
+							<field name="res_name" />
+							<field name="url" widget="url" />
+					    </group>
+					    <group>
+							<field name="res_model" />
+							<field name="res_id" />
+					    </group>
+					</group>
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+			  </form>
+		    </field>
+		</record>
+		<!-- DBE Document tree -->
+		<record model="ir.ui.view" id="dbe_document_tree">
+			<field name="name">dbe.document.tree</field>
+			<field name="model">dbe.document</field>
+			<field name="arch" type="xml"> 
+				<tree string="DBE Documents" colors="blue:state=='new';red:state=='pend';grey:state=='reject'">
+				  <field name="name" select="1" />
+				  <field name="state" select="1" />
+				  <field name="vendor_id" select="1" />
+				  <field name="type_of" select="1" />
+				  <field name="create_date" select="2" />
+				  <field name="create_uid" select="2" />
+				</tree>
+			</field>
+		</record>
+		<!-- DBE Document action -->
+		<record model="ir.actions.act_window" id="action_dbe_document">
+			<field name="name">DBE Documents</field>
+			<field name="res_model">dbe.document</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				  DBE Document records.
+				</p>
+			</field>				   
+		</record> 
+		<!-- DBE Document Menu Item -->
+		<menuitem name="Document"
+				  id="dbe.menu_documents"
+				  parent="base.menu_dbe_root"
+				  sequence="27" />
+			<menuitem name="Documents" parent="dbe.menu_documents" id="menu_documents_parent" sequence="4" />
+			<menuitem name="Document Details" parent="menu_documents_parent" id="menu_documents_child" action="action_dbe_document" />		    
+        <!-- DBE Document Categories FORM -->
+        <record model="ir.ui.view" id="document_category_form">
+            <field name="name">dbe.document.category</field>
+            <field name="model">dbe.document.category</field>
+            <field name="arch" type="xml">
+              <form string="Document Category" col="4" version="7.0">
+				<label string="Mandatory Document: " />
+				<field name="required" class="oe_inline" />
+                <group string="Category Name" colspan="4">
+					<field name="name" />
+                </group>
+                <group string="Category Description" colspan="4">                  
+                    <field name="description" />
+                </group>
+                <group string="Document Association" colspan="4">                  
+                    <field name="association" />
+                </group>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+             </form>
+            </field>
+        </record>
+		<!-- Document Category TREE -->
+        <record model="ir.ui.view" id="document_category_tree">
+            <field name="name">dbe.document.category</field>
+            <field name="model">dbe.document.category</field>
+            <field name="priority" eval="1" />
+            <field name="arch" type="xml">
+              <tree string="Document Categories">
+                <field name="name" />
+                <field name="description" />
+              </tree>
+            </field>
+        </record>
+        <!-- Document Category ACTION -->
+        <record model="ir.actions.act_window" id="action_document_category">
+            <field name="name">DBE Document Category</field>
+            <field name="res_model">dbe.document.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+        <!-- Document Category Menu Item -->
+        <menuitem name="Document Categories" parent="menu_documents_parent" id="menu_document_category_child" action="action_document_category" />	
+        <!-- DBE Document Index FORM -->
+        <record model="ir.ui.view" id="document_index_form">
+            <field name="name">dbe.document.index.form</field>
+            <field name="model">dbe.document.index</field>
+            <field name="arch" type="xml">
+              <form string="Document Index" col="4" version="7.0">
+                <group string="Index" colspan="4">
+									<field name="name" />
+									<field name="complete" />
+									<field name="required" />
+                </group>
+                <group string="Category" colspan="4">                  
+                    <field name="category" />
+                </group>
+                <group string="Application" colspan="4">                  
+                    <field name="application_id" />
+                </group>
+             </form>
+            </field>
+        </record>
+		<!-- Document Index TREE -->
+        <record model="ir.ui.view" id="document_index_tree">
+            <field name="name">dbe.document.index.tree</field>
+            <field name="model">dbe.document.index</field>
+            <field name="priority" eval="1" />
+            <field name="arch" type="xml">
+              <tree string="Document Index">
+                <field name="name" />
+                <field name="required" />
+                <field name="complete" />
+              </tree>
+            </field>
+        </record>
+        <!-- Document Index ACTION -->
+        <record model="ir.actions.act_window" id="action_document_index">
+            <field name="name">DBE Document Index</field>
+            <field name="res_model">dbe.document.index</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+        <!-- Document Index Menu Item -->
+        <menuitem name="Document Indexes" parent="menu_documents_parent" id="menu_document_index_child" action="action_document_index" />	
+		<!-- Certification form --> 
+		<record model="ir.ui.view" id="dbe_certification_form">
+			<field name="name">dbe.certification.form</field>
+			<field name="model">dbe.certification</field>
+			<field name="arch" type="xml">
+			  <form string="DBE Certification" version="7.0" create="false">
+<!--
+				<header>
+				    <button name="certify" states="decertified" string="Certify" type="object" class="oe_highlight" />
+				    <button name="decertify" states="certified" string="Decertify" type="object" class="oe_highlight"/>
+				    <field name="status" widget="statusbar" statusbar_visible="decertified,certified" statusbar_colors="{'decertified':'red','certified':'blue'}" />
+				</header>
+-->
+				 <sheet>
+					<div class="oe_title">
+					  <h1>
+						<label string="Certification: " />
+						<field name="company" class="oe_inline" select="1" readonly="1" />
+					  </h1>
+					</div>
+					<group>
+						<group>					  
+						  <field name="status" invisible="False" />
+						  <field name="certification_type" select="1" />
+						  <field name="certification_date" select="1"/>
+						  <field name="anniversary_date" select="1" />
+						</group> 
+						<group>
+						  <field name="certification_number" select="2" />
+						  <field name="dbe_manager" select="2" />						  
+						  <field name="certifier" select="2" />
+						  <field name="paucp_cert_number" select="2" />						  
+						</group>
+					  </group>
+						<notebook>
+							<page string="Record Details">
+								<group>
+								  <field name="dbe_specialist" select="2" />
+								  <field name="active" />
+								  <field name="write_date" />
+								  <field name="write_uid" />						  
+								</group>
+							</page> 
+							<page string="Documents">
+							  <field name="documents" context="{'form_view_ref' : 'dbe.dbe_document_form_simple'}">
+								<tree string="Docs">
+									<field name="name" />
+									<field name="description" />
+									<field name="type_of" />
+									<field name="state" />
+								</tree>
+							  </field>
+							</page> 
+							<page string="Onsite Reports">
+							  <field name="onsite_report" domain="[('reason','!=','application')]" context="{'form_view_ref' : 'dbe.dbe_onsite_visit_form_simple'}">
+								<tree string="Onsite Visit Reports">
+									<field name="visit_date" />
+									<field name="recommended" />
+									<field name="dbe_specialist" />
+									<field name="followup_date" />
+								</tree>
+							  </field>
+							</page> 
+							<page string="History">
+							  <field name="history">
+								<tree string="Historical Transactions" editable="top">
+									<field name="transaction_type" />
+									<field name="current_status" />
+									<field name="write_date" />
+									<field name="write_uid" />																
+								</tree>
+							  </field>
+							</page>
+						</notebook>
+				   </sheet>
+				   <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                   </div>
+			   </form>
+			 </field>
+		  </record>
+		<!-- Certification tree -->
+		<record model="ir.ui.view" id="dbe_certification_tree">
+			<field name="name">dbe.certification.tree</field>
+			<field name="model">dbe.certification</field>
+			<field name="arch" type="xml"> 
+				<tree string="Certifications" create="false" colors="blue:status=='certified';red:status=='decertified'">
+				  <field name="company" select="1" />
+				  <field name="certification_type" />
+				  <field name="certification_date" select="1" />
+				  <field name="status" select="1" />
+				  <field name="write_date" />
+				  <field name="write_uid" />
+				</tree>
+			</field>
+		</record>
+		<!-- Certification action -->
+		<record model="ir.actions.act_window" id="action_certification">
+			<field name="name">DBE Certification</field>
+			<field name="res_model">dbe.certification</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				  Click Create to begin adding Certification records.
+				</p>
+			</field>		   
+		</record> 
+		<!-- Certification History form -->		  
+		<record model="ir.ui.view" id="dbe_certification_history_form">
+			<field name="name">dbe.certification.history.form</field>
+			<field name="model">dbe.certification.history</field>
+			<field name="arch" type="xml">
+			  <form string="DBE Certification History" version="7.0" create="false" edit="false">
+				<sheet>
+					<div class="oe_title">
+					  <h1>
+						<label string="Certification History: " />
+						<field name="transaction_type" class="oe_inline" select="1" />
+					  </h1>
+					</div>
+					<group string="Certification History Record" colspan="4">
+						<group>					  
+						  <field name="certification_id" select="1" />
+						  <field name="current_status" select="1" />
+						  <field name="dbe_manager" select="2" />
+						  <field name="dbe_specialist" select="2" />
+						</group> 
+						<group>
+						  <field name="certification_date" />
+						  <field name="anniversary_date" />
+						</group>
+					<!--	<group>
+						  <field name="docs_completed" />
+						</group> -->
+					</group>
+					<group string="History Record" col="2">
+						<field name="write_date" />
+						<field name="write_uid" />					
+					</group>
+				</sheet>
+			  </form>
+		    </field>
+		</record>
+		<!-- Certification History tree -->
+		<record model="ir.ui.view" id="dbe_certification_history_tree">
+			<field name="name">dbe.certification.history.tree</field>
+			<field name="model">dbe.certification.history</field>
+			<field name="arch" type="xml"> 
+				<tree string="Historical Transactions" create="false" colors="blue:transaction_type=='CERTIFY';red:transaction_type=='DECERTIFY'">
+				  <field name="transaction_type" select="1" />
+				  <field name="certification_id" select="1" />
+				  <field name="current_status" select="1" />
+				  <field name="certification_date" select="1" />
+				  <field name="anniversary_date" />
+				  <field name="dbe_specialist" />
+				  <field name="write_date" />
+				  <field name="write_uid" />
+				</tree>
+			</field>
+		</record>
+		<!-- Certification History action -->
+		<record model="ir.actions.act_window" id="action_certification_history">
+			<field name="name">DBE Certification History</field>
+			<field name="res_model">dbe.certification.history</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				  Certification History records.
+				</p>
+			</field>		   
+		</record> 
+		<!-- Certification History Menu Item -->
+		    <menuitem name="Certification History" parent="menu_certification_parent" id="menu_certification_history_child" action="action_certification_history" />
+		<!-- Certification menu item -->		  
+		<menuitem name="Certification"
+				  id="dbe.menu_certification"
+				  parent="base.menu_dbe_root"
+				  sequence="25" />
+			<menuitem name="Certifications" parent="dbe.menu_certification" id="menu_certification_parent" sequence="4" />
+			<menuitem name="Certification Details" parent="menu_certification_parent" id="menu_certification_child" action="action_certification" />			
+        <!-- DBE Job Position FORM -->
+        <record model="ir.ui.view" id="dbe_job_position_form">
+            <field name="name">dbe.job.position</field>
+            <field name="model">dbe.job.position</field>
+            <field name="arch" type="xml">
+              <form string="Job Position" col="4" version="7.0">
+                <group string="Position Name" colspan="4">
+					<field name="name" />
+                </group>
+                <group string="Record" colspan="4">                  
+                    <field name="active" />
+                </group>
+             </form>
+            </field>
+        </record>
+		<!-- DBE Job Position TREE -->
+        <record model="ir.ui.view" id="dbe_job_position_tree">
+            <field name="name">dbe.job.position</field>
+            <field name="model">dbe.job.position</field>
+            <field name="priority" eval="1" />
+            <field name="arch" type="xml">
+              <tree string="Vendor Job Positions">
+                <field name="name" />
+                <field name="active" />
+              </tree>
+            </field>
+        </record>
+        <!-- DBE Job Position ACTION -->
+        <record model="ir.actions.act_window" id="action_dbe_job_position">
+            <field name="name">Vendor Job Positions</field>
+            <field name="res_model">dbe.job.position</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+        <!-- DBE Job Position Menu Item -->
+        <menuitem name="Job Positions" parent="menu_vendor_parent" id="menu_vendor_job_positions__child" action="action_dbe_job_position" />
+        <!-- dbe_onsite_visit_form_simple -->
+		<record model="ir.ui.view" id="dbe_onsite_visit_form_simple">
+			<field name="name">dbe.onsite.visit.form</field>
+			<field name="model">dbe.onsite.visit</field>
+			<field name="priority" eval="17" />
+			<field name="arch" type="xml">
+			  <form string="DBE Site Visit Report" version="7.0">
+				<sheet>
+			<!--		<div class="oe_title">
+					  <h1>
+						<label string="Onsite Visit Report for: " />
+						<field name="vendor_id" select="1" class="oe_inline" />
+					  </h1>
+					</div> -->
+					<group string="Report Details" colspan="4">
+						<group>					  
+						  <field name="visit_date" select="1" />
+						  <field name="location" />					  
+						  <field name="reason" select="1" />
+						  <field name="origin" select="1" />
+						</group> 
+						<group>
+						  <field name="dbe_specialist" />
+						  <field name="followup_date" select="2" />
+						 <!-- <field name="revision" /> 
+						  <field name="active" select="2" /> -->
+						</group>
+					</group>
+					<group string="Applicants">
+						  <field name="applicants" nolabel="1">
+							<tree string="Contact">
+								<field name="name" />
+								<field name="email" />
+								<field name="phone1" />
+								<field name="address1" />
+								<field name="address2" />
+								<field name="city" />
+								<field name="state_id" />
+								<field name="zip" />
+							</tree>
+						  </field>
+					</group>
+					<group string="Recommendation" col="2">						
+						<field name="recommended" />
+						<field name="note" />					
+					</group>
+				<!--	<group string="Record" colspan="4">
+						<field name="write_date" />
+						<field name="write_uid" />	
+					</group> -->
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+			  </form>
+		    </field>
+		</record>        
+		<!-- DBE Site Visit Report form -->		  
+		<record model="ir.ui.view" id="dbe_onsite_visit_form">
+			<field name="name">dbe.onsite.visit.form</field>
+			<field name="model">dbe.onsite.visit</field>
+			<field name="arch" type="xml">
+			  <form string="DBE Site Visit Report" version="7.0">
+				<sheet>
+					<div class="oe_title">
+					  <h1>
+						<label string="Onsite Visit Report for: " />
+						<field name="vendor_id" select="1" class="oe_inline" />
+					  </h1>
+					</div>
+					<group string="Report Details" colspan="4">
+						<group>					  
+						  <field name="visit_date" select="1" />
+						  <field name="location" />					  
+						  <field name="reason" select="1" />
+						  <field name="origin" select="1" />
+						</group> 
+						<group>
+						  <field name="dbe_specialist" />
+						  <field name="followup_date" select="2" />
+						  <field name="revision" />
+						  <field name="active" select="2" />
+						</group>
+					</group>
+					<group string="Applicants">
+						  <field name="applicants" nolabel="1">
+							<tree string="Contact">
+								<field name="name" />
+								<field name="email" />
+								<field name="phone1" />
+								<field name="address1" />
+								<field name="address2" />
+								<field name="city" />
+								<field name="state_id" />
+								<field name="zip" />
+							</tree>
+						  </field>
+					</group>
+					<group string="Recommendation" col="2">						
+						<field name="recommended" />
+						<field name="note" />					
+					</group>
+					<group string="Record" colspan="4">
+						<field name="write_date" />
+						<field name="write_uid" />	
+					</group>
+				</sheet>
+				<div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+			  </form>
+		    </field>
+		</record>
+		<!-- DBE Site Visit Report tree -->
+		<record model="ir.ui.view" id="dbe_onsite_visit_tree">
+			<field name="name">dbe.onsite.visit.tree</field>
+			<field name="model">dbe.onsite.visit</field>
+			<field name="arch" type="xml"> 
+				<tree string="Site Visit Reports" colors="green:recommended=='certify';red:recommended=='deny';grey:recommended=='other'">
+				  <field name="vendor_name" select="1" />
+				  <field name="visit_date" select="1" />
+				  <field name="recommended" select="1" />
+				  <field name="followup_date" select="1" />
+				  <field name="reason" select="1" />
+				  <field name="origin" select="2" />
+				  <field name="dbe_specialist" select="1" />
+				</tree>
+			</field>
+		</record>
+		<!-- DBE Site Visit Report -->
+		<record model="ir.actions.act_window" id="action_onsite_visit">
+			<field name="name">Site Visit Reports</field>
+			<field name="res_model">dbe.onsite.visit</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+				  Site Visit Report records.
+				</p>
+			</field>				   
+		</record> 
+		<!-- DBE Site Visit Report Menu Item -->
+			<menuitem name="Reports" parent="dbe.menu_documents" id="menu_reports_parent" sequence="4" />
+			<menuitem name="On-Site Visits" parent="menu_reports_parent" id="menu_reports_child" action="action_onsite_visit" />	
+	</data>			  
+</openerp>	   

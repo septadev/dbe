@@ -1,0 +1,116 @@
+<!-- Vendor Details Data Template Begin -->
+<p tal:content="title">
+Title
+</p>
+<p tal:content="header">
+Header
+</p>
+<div id="vendor_details_table" tal:repeat="detail details">
+	<p tal:omit-tag="not:exists:detail/message" tal:content="detail/message"></p>
+	<table id="details">
+		<tr>
+		  <th class="alignright" colspan="2">Vendor Details</th>
+		</tr>
+		<tr>
+		  <td class="alignright">Company</td>
+		  <td tal:content="detail/company" class="alignleft">Dos Equis</td>
+		</tr>
+		<tr class="alt">
+		  <td class="alignright">SEPTA Vendor ID</td>
+		  <td tal:content="detail/septa_vendor_id" class="alignleft">1234567</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Description</td>
+		  <td tal:content="detail/description" class="alignleft">Beer, Wine, and Distilled Alcoholic Beverage Merchant Wholesalers</td>
+		</tr>
+		<tr class="alt">
+		  <td class="alignright">W9 Classification</td>
+		  <td tal:content="detail/w9_classification" class="alignleft">Partnership</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Company Class</td>
+		  <td tal:content="detail/comp_class" class="alignleft">Wholesalers</td>
+		</tr>
+		<tr class="alt">
+		  <td class="alignright">Gender</td>
+		  <td tal:content="detail/gender" class="alignleft">M</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Ethnicity</td>
+		  <td tal:content="detail/ethnicity" class="alignleft">Hispanic</td>
+		</tr>
+		<tr>
+		  <th class="alignright" colspan="2">NAICS Codes</th>
+		</tr>
+		<tr>
+		  <th>Code</th>
+		  <th>Title</th>
+		</tr>
+		<tr tal:repeat="naic detail/naics">
+		  <td class="alignright" tal:content="naic/code">Ethnicity</td>
+		  <td tal:content="naic/title" class="alignleft">Hispanic</td>
+		</tr>
+	</table>
+	<table tal:condition="exists:detail/application" tal:repeat="app detail/application" id="application">
+		<tr>
+		  <th class="alignright" colspan="2">DBE/SBE Application</th>
+		</tr>
+		<tr>
+		  <td class="alignright">Intake Date</td>
+		  <td tal:content="app/intake_date" class="alignleft">07/04/1776</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Status</td>
+		  <td tal:content="app/state" class="alignleft">PEND</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Completed &#37;</td>
+		  <td tal:content="app/completion" class="alignleft">100</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Onsite Inspection Approved</td>
+		  <td tal:content="app/visit_approved" class="alignleft">True</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Application Approval</td>
+		  <td tal:content="app/verified_date" class="alignleft">07/04/1776</td>
+		</tr>
+	</table>
+	<table tal:condition="exists:detail/certification" tal:repeat="cert detail/certification" id="certification">
+		<tr>
+		  <th class="alignright" colspan="2">DBE/SBE Certification</th>
+		</tr>	
+		<tr>
+		  <td class="alignright">Certification Type</td>
+		  <td tal:content="cert/certification_type" class="alignleft">DBE</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Status</td>
+		  <td tal:content="cert/status" class="alignleft">PEND</td>
+		</tr>
+		<tr>
+		  <td class="alignright">SEPTA Certification &#35;</td>
+		  <td tal:content="cert/certification_number" class="alignleft">1234567</td>
+		</tr>
+		<tr>
+		  <td class="alignright">PAUCP Certification &#35;</td>
+		  <td tal:content="cert/paucp_cert_number" class="alignleft">1234567</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Certified</td>
+		  <td tal:content="cert/certification_date" class="alignleft">07/04/1776</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Anniversary</td>
+		  <td tal:content="cert/anniversary_date" class="alignleft">07/04/1776</td>
+		</tr>
+  </table>
+</div>
+<script type="text/javascript" tal:content="structure script">
+    
+    
+				
+
+    
+</script>
+<!-- Vendor Details Data Template End -->

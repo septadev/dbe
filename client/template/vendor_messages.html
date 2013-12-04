@@ -1,0 +1,49 @@
+<!-- Vendor contacts Data Template Begin -->
+<p tal:content="title">
+Title
+</p>
+<p tal:content="header">
+Header
+</p>
+<div tal:condition="mail_flag">
+	<table id="messages" class="expandable">
+		<tr>
+			<th> </th>
+			<th>Date</th>
+			<th>Subject</th>
+			<th>From</th>
+		</tr>
+		<p tal:repeat="message messages" tal:omit-tag="">
+		<tr>
+			<td>&nbsp;</td>
+			<td tal:content="message/date">07/04/1776</td>
+			<td class="alignright"><b tal:condition="message/to_read">NEW: </b><span tal:replace="message/subject">subject</span></td>
+			<td tal:content="message/author_id">email-author</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td tal:content="message/date">07/04/1776</td>
+			<td colspan="2"><span tal:replace="structure message/body">message body</span></td>
+		</tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td tal:content="message/date">07/04/1776</td>
+      <td tal:content="message/id">&nbsp;</td>
+      <td><a href="#" id="reply" tal:condition="message/active">Reply</a></td>
+    </tr>
+		</p>
+	</table>
+</div>
+<script type="text/javascript" tal:content="structure script">
+
+
+
+
+
+</script>
+<form id="email_reply">
+  <p tal:repeat="item formhtml" tal:omit-tag="">
+		<span tal:replace="structure item" />
+  </p>
+</form>
+<!-- Vendor contacts Data Template End -->

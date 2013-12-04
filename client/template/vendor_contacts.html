@@ -1,0 +1,83 @@
+<!-- Vendor contacts Data Template Begin -->
+<p tal:content="title">
+Title
+</p>
+<p tal:content="header">
+Header
+</p>
+<div tal:repeat="contact contacts">
+	<p tal:omit-tag="not:exists:contact/message" tal:content="contact/message"></p>
+	<table id="contacts">
+		<tr>
+		  <th class="alignright" colspan="2">DBE Vendor Contact</th>
+		</tr>
+		<tr>
+		  <td class="alignright">Title</td>
+		  <td tal:content="contact/title" class="alignleft">Dos Equis</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Name</td>
+		  <td tal:content="contact/name" class="alignleft">Dos Equis</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Job Position</td>
+		  <td tal:content="contact/position" class="alignleft">Dos Equis</td>
+		</tr>
+		<tr class="alt">
+		  <td class="alignright">Address</td>
+		  <td tal:content="contact/address1" class="alignleft">1234567 My Ave.</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Address</td>
+		  <td tal:content="contact/address2" class="alignleft">Suite 2</td>
+		</tr>
+		<tr class="alt">
+		  <td class="alignright">City</td>
+		  <td tal:content="contact/city" class="alignleft">Montauk</td>
+		</tr>
+		<tr>
+		  <td class="alignright">State</td>
+		  <td tal:content="contact/state_id" class="alignleft">NY</td>
+		</tr>
+		<tr class="alt">
+		  <td class="alignright">Zip Code</td>
+		  <td tal:content="contact/zip" class="alignleft">11954</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Country</td>
+		  <td tal:content="contact/country_id" class="alignleft">USA</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Website</td>
+		  <td tal:content="contact/website" class="alignleft">www.site.com</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Email</td>
+		  <td tal:content="contact/email" class="alignleft">me@you.org</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Office Phone</td>
+		  <td tal:content="contact/phone1" class="alignleft">215-555-1212</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Extension</td>
+		  <td tal:content="contact/ext" class="alignleft">215-555-1212</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Mobile Phone</td>
+		  <td tal:content="contact/phone2" class="alignleft">215-555-1212</td>
+		</tr>
+		<tr>
+		  <td class="alignright">Fax</td>
+		  <td tal:content="contact/fax" class="alignleft">215-555-1212</td>
+		</tr>
+	</table>
+</div>
+<script type="text/javascript" tal:content="structure script">
+    
+    
+				
+
+    
+</script>
+<!-- Vendor contacts Data Template End -->
