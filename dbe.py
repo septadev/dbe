@@ -18,14 +18,18 @@
 ##############################################################################
 
 import logging
+#import time
+import functools
+import random
+import string
 from openerp.osv import osv
 from openerp.osv import fields
 from openerp import SUPERUSER_ID
 from openerp import pooler, tools
 from openerp.tools.translate import _
-import time
-import datetime
-import functools
+from datetime import *
+from types import *
+
 
 _logger = logging.getLogger(__name__)
 _transaction_types = {'app_new': 'NEW',
@@ -57,18 +61,32 @@ _business_types = (('SP', 'SOLE PROPRIETOR'),
                    ('JV', 'JOINT VENTURE'),
                    ('T', 'TRUST'))
 
+def random_string(size, format):
 
-class dbe_messages(osv.osv):
-    """ DBE Message """
-    _name = 'dbe.messages'
-    _description = 'DBE Message'
-    _inherit = 'mail.message'
+    """
+    Generate some random characters of length size=n.
+    @param size: Int (Size of random string returned.)
+    @param format: String (hex, letters, digits)
+    @type size: IntType
+    @type format: StringType
+    @return: String
+    """
+    formats = ('hex', 'letters', 'digits')
+    assert type(size) is IntType, "size is not an integer: %r" % size
+    assert type(format) is StringType, "format is not a string: %r" % format
+    if format in formats:
+        allowed = ''
+        if format == formats[1]:   # Generate string comprised of random letters.
+            allowed = string.ascii_letters
+        elif format == formats[0]: # Generate string comprised of random letters and numbers.
+            allowed = string.hexdigits
+        elif format == formats[2]: # Generate string comprised of random numbers.
+            allowed = string.digits
 
-    _columns = {
-        'vendor_id': fields.integer('Vendor Id'),
-        'application_related': fields.boolean('Application'),
-        'certification_related': fields.boolean('Certification'),
-    }
+    else:
+        raise TypeError
+
+    return ''.join([allowed[random.randint(0, len(allowed) - 1)] for x in xrange(size)])
 
 
 class dbe_vendor(osv.osv):
@@ -896,10 +914,20 @@ class dbe_document(osv.osv):
             ('approve', 'Approved'))
 
     def create_index(self, cr, uid, vals, doc_id, context=None):
+        """
+
+        @param cr: cursor
+        @param uid: user_id
+        @param vals: fields
+        @param doc_id: dbe_document id
+        @param context: OpenERP context object
+        @return: id of new dbe.document.index
+        """
         res = None
         association_id = self.read(cr, uid, doc_id, ['application_id'], context=context) 
-        if association_id['application_id']:
-            app_id = association_id['application_id']
+        if association_id: # dbe.document.index only required for dbe applications.
+            app_id = association_id[0]
+            app_name = association_id[1]
             category_id = vals['type_of']
             category_object = self.pool.get('dbe.document.category')
             category = category_object.browse(cr, uid, category_id)
@@ -907,9 +935,10 @@ class dbe_document(osv.osv):
                 index_object = self.pool.get('dbe.document.index')
                 index_ids = index_object.search(cr, uid, [('application_id', '=', app_id),
                                                           ('category', '=', category.id)])
-                if not index_ids:
+                if not index_ids: # Check that an index hasn't already been created already.
+                    rndstr = random_string(7, 'hex')
                     res = index_object.create(cr, uid, {
-                        'name': 'V-' + str(vals['vendor_id']) + '-A-' + str(app_id) + '-C-' + category.name,
+                        'name': app_name + '-id-' + str(app_id) + '_' + rndstr.upper(),
                         'application_id': app_id,
                         'required': category.required,
                         'category': category.id,
