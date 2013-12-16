@@ -18,7 +18,6 @@
 ##############################################################################
 
 import logging
-#import time
 import functools
 import random
 import string
@@ -29,6 +28,7 @@ from openerp import pooler, tools
 from openerp.tools.translate import _
 from datetime import *
 from types import *
+import time
 
 
 _logger = logging.getLogger(__name__)
@@ -87,6 +87,18 @@ def random_string(size, format):
         raise TypeError
 
     return ''.join([allowed[random.randint(0, len(allowed) - 1)] for x in xrange(size)])
+
+class dbe_messages(osv.osv):
+    """ DBE Message """
+    _name = 'dbe.messages'
+    _description = 'DBE Message'
+    _inherit = 'mail.message'
+
+    _columns = {
+        'vendor_id': fields.integer('Vendor Id'),
+        'application_related': fields.boolean('Application'),
+        'certification_related': fields.boolean('Certification'),
+    }
 
 
 class dbe_vendor(osv.osv):
@@ -914,18 +926,9 @@ class dbe_document(osv.osv):
             ('approve', 'Approved'))
 
     def create_index(self, cr, uid, vals, doc_id, context=None):
-        """
-
-        @param cr: cursor
-        @param uid: user_id
-        @param vals: fields
-        @param doc_id: dbe_document id
-        @param context: OpenERP context object
-        @return: id of new dbe.document.index
-        """
         res = None
         association_id = self.read(cr, uid, doc_id, ['application_id'], context=context) 
-        if association_id: # dbe.document.index only required for dbe applications.
+        if association_id:
             app_id = association_id[0]
             app_name = association_id[1]
             category_id = vals['type_of']
@@ -935,7 +938,7 @@ class dbe_document(osv.osv):
                 index_object = self.pool.get('dbe.document.index')
                 index_ids = index_object.search(cr, uid, [('application_id', '=', app_id),
                                                           ('category', '=', category.id)])
-                if not index_ids: # Check that an index hasn't already been created already.
+                if not index_ids:
                     rndstr = random_string(7, 'hex')
                     res = index_object.create(cr, uid, {
                         'name': app_name + '-id-' + str(app_id) + '_' + rndstr.upper(),
