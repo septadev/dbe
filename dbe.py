@@ -930,7 +930,7 @@ class dbe_document(osv.osv):
         association_id = self.read(cr, uid, doc_id, ['application_id'], context=context) 
         if association_id:
             app_id = association_id[0]
-            app_name = association_id[1]
+            #app_name = association_id[1]
             category_id = vals['type_of']
             category_object = self.pool.get('dbe.document.category')
             category = category_object.browse(cr, uid, category_id)
@@ -941,7 +941,7 @@ class dbe_document(osv.osv):
                 if not index_ids:
                     rndstr = random_string(7, 'hex')
                     res = index_object.create(cr, uid, {
-                        'name': app_name + '-id-' + str(app_id) + '_' + rndstr.upper(),
+                        'name': str(app_id) + '_' + rndstr.upper(),
                         'application_id': app_id,
                         'required': category.required,
                         'category': category.id,

@@ -1114,7 +1114,7 @@ $(document).ready(function(){
         """
         res = None
         documents = []
-        applications = None
+
         doc_fields = ["create_date", "state", "type_of", "name", "description"]
         sid = req.session_id
         req.session.ensure_valid()
@@ -1151,6 +1151,7 @@ $(document).ready(function(){
 
         def _valid_app():
             res = {}
+            applications = None
             try: # Find all Applications for current vendor.
                 applications = get_application(req, vid)
                 _logger.debug('<vendor_documents> Valid Application found %s', applications)
@@ -1158,7 +1159,7 @@ $(document).ready(function(){
                 _logger.debug('<vendor_documents> Session expired or Applications not found for vendor ID: %s', vid)
 
             valid_apps = []    # From the available Applications get only pending and new.
-            if applications is not None and applications['length'] > 0:
+            if applications is not None:
                 for application in applications['records']:
                     if application['state'] not in ['pend', 'new']:
                         continue
