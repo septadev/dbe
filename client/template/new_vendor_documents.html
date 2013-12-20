@@ -7,7 +7,8 @@
     <title tal:content="title">title</title>
    <!-- <link rel="stylesheet" type="text/css" media="screen"
       href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> -->
-    <link href="/web/static/src/css/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="/dbe/static/src/css/jquery-ui.css" type="text/css" rel="stylesheet" />
+    <link href="/dbe/static/src/css/jquery.ui.theme.css" type="text/css" rel="stylesheet" />
     <!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/base/jquery-ui.css" type="text/css" rel="stylesheet" /> -->
 <!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/black-tie/jquery-ui.css" type="text/css" rel="stylesheet" /> -->
 <!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/blitzer/jquery-ui.css" type="text/css" rel="stylesheet" /> -->
@@ -45,13 +46,8 @@
     <script type="text/javascript" 
       src="/web/static/src/js/jquery-ui.js"></script>
     <script type="text/javascript" src="/web/static/src/js/sessvars.js"></script>
-    <script type="text/javascript">
-    //global variables
-	    var sessionid = null;
-	    var responseData = null;   
-	    var postData = null; 
-        
-    </script>
+    <!-- <script type="text/javascript" src="/dbe/static/src/js/docs_table.js"></script> -->
+
     <script type="text/javascript" tal:content="structure script">
     
     
@@ -340,6 +336,10 @@
 		background: linear-gradient(to bottom,  rgba(207,231,250,1) 1%,rgba(141,0,249,1) 100%); /* W3C */
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cfe7fa', endColorstr='#8d00f9',GradientType=0 ); /* IE6-8 */
 		}
+      .accordion-expand-holder {
+    text-align: center;
+    padding: 10px;
+}
 	  </style>
   </head>
   <body>
@@ -350,26 +350,18 @@ Title
 <p tal:content="header">
 Header
 </p>
-
+<p class="accordion-expand-holder">
+    <a class="accordion-expand-all" href="#">Expand all</a>
+</p>
+<div id="accordion" class="ui-accordion ui-widget ui-helper-reset">
 <i tal:repeat="category categories" tal:omit-tag="">
-<div id="" tal:attributes="id category/id"><!-- Outer Iterator Begin -->
-  <table id="documents" tal:attributes="id category/id">
-    <tr>
-      <th>Name</th>
-      <th>Date</th>
-      <th>Type</th>
-      <th>Status</th>
-    </tr>
-    <tr tal:repeat="document category/documents">
-      <td class="alignright" tal:content="document/name">Name</td>
-      <td tal:content="document/create_date">Title</td>
-      <td tal:content="document/type_of">type</td>
-      <td tal:content="document/state" class="alignleft">Approved</td>
-    </tr>
+    <h3 class="accordion-header ui-accordion-header ui-helper-reset ui-state-default ui-accordion-icons ui-corner-all">
+        <span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>
+        <strong tal:content="category/name">Section 1</strong>
+    </h3>
+  <div class="ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom"><!-- Outer Iterator Begin -->
 
-  </table>
-  <div id="uploader" tal:condition="form_flag" class="info">
-    <form class="form_binary_form" action="/dbe/client/upload_dbe_document" method="post" enctype="multipart/form-data" id="" tal:attributes="id category/id">
+      <form class="form_binary_form" action="/dbe/client/upload_dbe_document" method="post" enctype="multipart/form-data" id="" tal:attributes="id category/id">
       <input type="hidden" name="category" value="None" tal:attributes="value category/id">
       <input type="hidden" name="callback" value="debug">
       <input type="hidden" name="vid" tal:condition="vid" tal:attributes="value vid" value="">
@@ -379,21 +371,98 @@ Header
       <input type="hidden" name="model" value="dbe.application" tal:condition="application">
       <input type="hidden" name="model" value="dbe.certification" tal:condition="certification">
       <input type="hidden" name="tab" value="tabs-5">
-      <input class="form_binary_file" type="file" name="ufile"><br />
-      <button class="oe_button oe_field_button" type="submit" id="OBEY">
-        <img src="/web/static/src/img/icons/STOCK_DIRECTORY.png">
-        <span>Upload</span>
-      </button> <br />
-    </form> <br />
+
+      <table id="documents" tal:attributes="id category/id">
+        <caption tal:content="category/description">category description</caption>
+        <tr>
+          <th> </th>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+        <tr tal:repeat="document category/documents">
+          <td></td>
+          <td class="alignright" tal:content="document/name">Name</td>
+          <td tal:content="document/create_date">Title</td>
+          <td tal:content="document/type_of">type</td>
+          <td tal:content="document/state" class="alignleft">Approved</td>
+        </tr>
+        <tr tal:condition="form_flag" class="info">
+            <td></td>
+            <td><input class="form_binary_file" type="file" name="ufile"></td>
+            <td>
+                <button class="oe_button oe_field_button" type="submit" id="OBEY">
+                    <img src="/web/static/src/img/icons/STOCK_DIRECTORY.png">
+                    <span>Upload</span>
+                </button>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+
+      </table>
+    </form>
+
+
   </div>
-  <div id="no_uploader" tal:condition="not:form_flag" class="notice">
-		<p> <!-- Notify user that they cannot upload any docs -->
-			<b>No further documentation is required at this time!</b> <br />
-			Uploading documents is only enabled when a <b>Vendor</b> is engaged in the <i>application process</i> or has a current <i>DBE/SBE Certification</i>.
-		</p>
-  </div>
-</div> <!-- Outer Iterator End -->
+
+ <!-- Outer Iterator End -->
 </i>
+</div>
+    <script type="text/javascript">
+    //global variables
+	    var sessionid = null;
+	    var responseData = null;
+	    var postData = null;
+        var headers = $('#accordion .accordion-header');
+        var contentAreas = $('#accordion .ui-accordion-content ').hide();
+        var expandLink = $('.accordion-expand-all');
+
+        // add the accordion functionality
+        headers.click(function() {
+            var panel = $(this).next();
+            var isOpen = panel.is(':visible');
+
+            // open or close as necessary
+            panel[isOpen? 'slideUp': 'slideDown']()
+                // trigger the correct custom event
+                .trigger(isOpen? 'hide': 'show');
+
+            // stop the link from causing a pagescroll
+            return false;
+        });
+
+        // hook up the expand/collapse all
+        expandLink.click(function(){
+            var isAllOpen = $(this).data('isAllOpen');
+
+            contentAreas[isAllOpen? 'hide': 'show']()
+                .trigger(isAllOpen? 'hide': 'show');
+        });
+
+        // when panels open or close, check to see if they're all open
+        contentAreas.on({
+            // whenever we open a panel, check to see if they're all open
+            // if all open, swap the button to collapser
+            show: function(){
+                var isAllOpen = !contentAreas.is(':hidden');
+                if(isAllOpen){
+                    expandLink.text('Collapse All')
+                        .data('isAllOpen', true);
+                }
+            },
+            // whenever we close a panel, check to see if they're all open
+            // if not all open, swap the button to expander
+            hide: function(){
+                var isAllOpen = !contentAreas.is(':hidden');
+                if(!isAllOpen){
+                    expandLink.text('Expand all')
+                    .data('isAllOpen', false);
+                }
+            }
+        });
+    </script>
 <script type="text/javascript" tal:content="structure script">
     
     
