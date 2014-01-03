@@ -292,6 +292,13 @@ def get_document_indexes(req, vid, **kwargs):
 
 
 def get_document_categories(req, vid, **kwargs):
+    """
+
+    @param req: OpenERP request object
+    @param vid: Vendor ID - int
+    @param kwargs:
+    @return: search_read result object containing document categories (all fields)
+    """
     document_categories = None
     fields = fields_get(req, 'dbe.document.category')
     try:
@@ -945,7 +952,9 @@ $(document).ready(function(){
                 args = {'error': e.faultCode}
             _logger.debug('<upload_dbe_document/application> dbe.document uploaded - callback: %s args: %s',
                           simplejson.dumps(callback), simplejson.dumps(args))
-            return out % (simplejson.dumps(callback), simplejson.dumps(args))
+            #return out % (simplejson.dumps(callback), simplejson.dumps(args))
+            return self.application_docs(req, vid)
+
         elif model == 'dbe.certification' and association == 'certification':
             try: # Create a DBE doc associated to a Certification.
                 attachment_id = Model.create({
@@ -1193,8 +1202,8 @@ $(document).ready(function(){
                     category.update({'documents': []})
                     for record in res['records']:
                         type_of = record['type_of']
-                        if type_of.__class__ == type(
-                                ()): # Yes shameful, but I didn't program the ORM to switch between returned types.
+                        # Yes shameful, but I didn't program the ORM to switch between returned types.
+                        if type_of.__class__ == type(()):
                         # Obtain display values from tuple
                             record['type_of'] = type_of[1]
                             record.update({'type_id': type_of[0]})
